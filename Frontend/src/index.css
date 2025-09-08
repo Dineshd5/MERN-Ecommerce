@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* any of the anchor tag where active classname available in that hr tag we set visible */
+a.active hr {
+  display: block;
+}
