@@ -5,7 +5,7 @@ import Title from "../components/Title";
 import { ShopContext } from "../context/shopContext";
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity } =
+  const { products, currency, cartItems, updateQuantity, navigate } =
     useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
@@ -90,6 +90,14 @@ const Cart = () => {
       <div className="mt-5 flex justify-end">
         <div className="w-full sm:w-[450px]">
           <CartTotal />
+          <div className="w-full text-end ">
+            <button
+              onClick={() => navigate("/place-order")}
+              className="bg-black text-white text-sm my-8 py-3 px-8 "
+            >
+              PROCEED TO CHECKOUT
+            </button>
+          </div>
         </div>
       </div>
     </div>
