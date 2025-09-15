@@ -68,7 +68,7 @@ const Collection = () => {
 
   useEffect(() => {
     applyFilter();
-  }, [category, subCategory, search, showSearch]);
+  }, [category, subCategory, search, showSearch, products]);
 
   useEffect(() => {
     sortProducts();
@@ -175,7 +175,7 @@ const Collection = () => {
             }}
             className="border-2 border-gray-300 text-sm px-2 "
           >
-            <option value="relavent">Sort by: Relevent</option>
+            <option value="relevant">Sort by: Relevent</option>
             <option value="low-high">Sort by: Low to High</option>
             <option value="high-low">Sort by: High to Low</option>
           </select>
