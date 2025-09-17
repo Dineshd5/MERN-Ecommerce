@@ -19,14 +19,14 @@ connectDB();
 connectCloudinary();
 
 // middlewares
+app.use(
+  cors({
+    origin: "*", // or your frontend URL: "https://forever-frontend-sooty-nine.vercel.app"
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); // or frontend URL
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
-app.use(cors());
 
 // API endpoints
 app.use("/api/user", userRouter);
