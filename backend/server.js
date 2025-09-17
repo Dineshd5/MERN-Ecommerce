@@ -23,9 +23,10 @@ app.use(
   cors({
     origin: "*", // or your frontend URL: "https://forever-frontend-sooty-nine.vercel.app"
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "token"], // add 'token'
   })
 );
+app.options("/", cors()); // handles OPTIONS for root route
 app.use(express.json());
 
 // API endpoints
