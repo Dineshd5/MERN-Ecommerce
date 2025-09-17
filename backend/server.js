@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors());
 
 // API endpoints
 app.use("/api/user", userRouter);
