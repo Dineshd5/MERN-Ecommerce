@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import {
   allOrders,
@@ -14,7 +15,7 @@ import authUser from "../middleware/auth.js";
 const orderRouter = express.Router();
 
 // Admin features
-orderRouter.post("/list", adminAuth, allOrders);
+orderRouter.post("/list", cors(), adminAuth, allOrders);
 orderRouter.post("/status", adminAuth, updateStatus);
 
 // Payment features
