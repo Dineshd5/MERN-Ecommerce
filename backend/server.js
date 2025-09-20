@@ -21,12 +21,12 @@ connectCloudinary();
 // middlewares
 app.use(
   cors({
-    origin: "*", // or your frontend URL: "https://forever-frontend-sooty-nine.vercel.app"
+    origin: "https://forever-frontend-sooty-nine.vercel.app", // safer than "*"
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "token"], // add 'token'
+    allowedHeaders: ["Content-Type", "Authorization", "token"],
   })
 );
-app.options("/", cors()); // handles OPTIONS for root route
+app.options("*", cors()); // allow preflight for all routes
 app.use(express.json());
 
 // API endpoints
