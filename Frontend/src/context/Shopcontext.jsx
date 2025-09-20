@@ -6,12 +6,11 @@ import { toast } from "react-toastify";
 
 export const ShopContext = createContext();
 
-const Url = "https://forever-backend-eight-sandy.vercel.app";
-
 const ShopContextProvider = (props) => {
   const currency = "$";
   const delivery_fee = 10;
-  const backendUrl = Url || "http://localhost:5000";
+  const backendUrl =
+    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -43,8 +42,10 @@ const ShopContextProvider = (props) => {
       try {
         await axios.post(
           backendUrl + "/api/cart/add",
+
           { itemId, size },
-          { headers: { token } }
+
+          { headers: { token }, withCredentials: true }
         );
       } catch (error) {
         console.log(error);
@@ -81,7 +82,7 @@ const ShopContextProvider = (props) => {
         await axios.post(
           backendUrl + "/api/cart/update",
           { itemId, size, quantity },
-          { headers: { token } }
+          { headers: { token }, withCredentials: true }
         );
       } catch (error) {
         console.log(error);
@@ -112,7 +113,9 @@ const ShopContextProvider = (props) => {
 
   const getProductsData = async () => {
     try {
-      const response = await axios.get(backendUrl + "/api/product/list");
+      const response = await axios.get(backendUrl + "/api/product/list", {
+        withCredentials: true, // add this
+      });
       console.log(response.data);
 
       if (response.data.success) {
@@ -131,7 +134,7 @@ const ShopContextProvider = (props) => {
       const response = await axios.post(
         backendUrl + "/api/cart/get",
         {},
-        { headers: { token } }
+        { headers: { token }, withCredentials: true }
       );
       if (response.data.success) {
         setCartItems(response.data.cartData);
@@ -146,6 +149,12 @@ const ShopContextProvider = (props) => {
   useEffect(() => {
     getProductsData();
   }, []);
+
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["token"] = token;
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!token && localStorage.getItem("token")) {
