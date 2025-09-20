@@ -19,12 +19,10 @@ connectDB();
 connectCloudinary();
 
 // middlewares
-const allowedOrigins =
-  process.env.NODE_ENV === "development"
-    ? ["http://localhost:5173"]
-    : [
-        "https://forever-frontend-fytb1i2wz-dineshs-projects-83ee3177.vercel.app",
-      ];
+const allowedOrigins = [
+  "http://localhost:5173",
+  /\.vercel\.app$/, // any Vercel frontend
+];
 
 app.use(
   cors({
