@@ -11,7 +11,7 @@ import Orders from "./pages/Orders";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const backendUrl =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
+  import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 console.log("Backend URL:", backendUrl);
 
 export const currency = "$";
