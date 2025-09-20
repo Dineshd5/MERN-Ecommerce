@@ -15,30 +15,38 @@ import userRouter from "./routes/userRoute.js";
 // App Config
 const app = express();
 const port = process.env.PORT || 4000;
+
+// Connect DB & Cloudinary
 connectDB();
 connectCloudinary();
 
-// middlewares
+// Middlewares
+app.use(express.json());
 app.use(
   cors({
-    origin: "https://forever-frontend-sooty-nine.vercel.app", // safer than "*"
+    origin: "https://forever-frontend-sooty-nine.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "token"],
   })
 );
-app.options("/*", cors()); // allow preflight for all routes
-app.use(express.json());
 
-// API endpoints
+// API routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
 
+// Root route (health check)
 app.get("/", (req, res) => {
-  res.send("API  Working");
+  res.send("API Working");
 });
 
+// Catch-all fallback for undefined routes (Express v5 safe)
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Start server
 app.listen(port, () => {
-  console.log(`server is started on PORT : ${port}`);
+  console.log(`Server started on PORT: ${port}`);
 });
