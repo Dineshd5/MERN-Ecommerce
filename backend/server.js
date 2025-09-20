@@ -26,7 +26,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "token"],
   })
 );
-app.options("*", cors()); // allow preflight for all routes
+app.options("/*", cors()); // allow preflight for all routes
 app.use(express.json());
 
 // API endpoints
