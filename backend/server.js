@@ -1,36 +1,52 @@
-import cors from "cors";
+// server.js
+import Cors from "cors";
 import "dotenv/config";
 import express from "express";
+import serverless from "serverless-http";
 
-// backends
+// Backends
 import connectDB from "../backend/config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 
-// routes
+// Routes
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import productRouter from "./routes/productRoute.js";
 import userRouter from "./routes/userRoute.js";
 
-// App Config
+// Initialize Express
 const app = express();
-const port = process.env.PORT || 4000;
 
-// Connect DB & Cloudinary
+// Connect to DB & Cloudinary
 connectDB();
 connectCloudinary();
 
-// Middlewares
-app.use(express.json());
-app.use(
-  cors({
-    origin: "https://forever-frontend-sooty-nine.vercel.app",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "token"],
-  })
-);
+// CORS Middleware
+const corsMiddleware = Cors({
+  origin: "https://forever-frontend-sooty-nine.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "token"],
+});
 
-// API routes
+// Helper to run middleware in serverless
+const runMiddleware = (req, res, fn) =>
+  new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) return reject(result);
+      resolve(result);
+    });
+  });
+
+// Apply CORS to all requests
+app.use(async (req, res, next) => {
+  await runMiddleware(req, res, corsMiddleware);
+  next();
+});
+
+// JSON parser
+app.use(express.json());
+
+// API Routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
@@ -41,12 +57,10 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-// Catch-all fallback for undefined routes (Express v5 safe)
+// Catch-all fallback (404)
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server started on PORT: ${port}`);
-});
+// Export handler for Vercel
+export const handler = serverless(app);

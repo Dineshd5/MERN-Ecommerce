@@ -57,38 +57,18 @@ const addProduct = async (req, res) => {
   }
 };
 
-// Helper to wait for middleware in serverless
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) return reject(result);
-      resolve(result);
-    });
-  });
-}
-
-// Example for listProducts
+//function for list Product
 const listProducts = async (req, res) => {
-  await runMiddleware(req, res, cors); // Apply CORS
   try {
     const products = await productModel.find({});
+    console.log(products);
+
     res.json({ success: true, products });
   } catch (error) {
     res.json({ success: false, message: error.message });
+    console.log(error);
   }
 };
-//function for list Product
-// const listProducts = async (req, res) => {
-//   try {
-//     const products = await productModel.find({});
-//     console.log(products);
-
-//     res.json({ success: true, products });
-//   } catch (error) {
-//     res.json({ success: false, message: error.message });
-//     console.log(error);
-//   }
-// };
 
 //function for remove Product
 const removeProduct = async (req, res) => {
