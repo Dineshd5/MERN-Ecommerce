@@ -19,11 +19,26 @@ connectDB();
 connectCloudinary();
 
 // middlewares
+const allowedOrigins =
+  process.env.NODE_ENV === "development"
+    ? ["http://localhost:5173"]
+    : ["https://forever-frontend-sooty-nine.vercel.app"];
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      // allow requests with no origin like Postman or server-to-server
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("Not allowed by CORS: " + origin), false);
+      }
+
+      return callback(null, true);
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "token"],
+    credentials: true, // if you are sending cookies or auth headers
   })
 );
 
