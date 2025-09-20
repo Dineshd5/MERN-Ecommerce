@@ -6,11 +6,12 @@ import { toast } from "react-toastify";
 
 export const ShopContext = createContext();
 
+const Url = "https://forever-backend-eight-sandy.vercel.app";
+
 const ShopContextProvider = (props) => {
   const currency = "$";
   const delivery_fee = 10;
-  const backendUrl =
-    import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const backendUrl = Url || "http://localhost:5000";
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
