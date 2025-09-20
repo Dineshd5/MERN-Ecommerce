@@ -22,7 +22,7 @@ connectCloudinary();
 const allowedOrigins =
   process.env.NODE_ENV === "development"
     ? ["http://localhost:5173"]
-    : ["https://forever-frontend-sooty-nine.vercel.app"];
+    : ["https://forever-frontend-bay-two.vercel.app"];
 
 app.use(
   cors({
